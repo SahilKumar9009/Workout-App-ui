@@ -8,6 +8,19 @@ class HomeScreen extends StatelessWidget {
     'Push Day',
     'Pull Day',
     'Leg Day',
+    'Push Day',
+    'Pull Day',
+    'Leg Day',
+    'Push Day',
+    'Pull Day',
+    'Leg Day',
+    'Push Day',
+    'Pull Day',
+    'Leg Day',
+    'Push Day',
+    'Pull Day',
+    'Leg Day',
+    'Push Day',
   ];
 
   @override

@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
-import 'package:workout_app/screens/signup.dart';
-import 'package:workout_app/screens/forgot.dart';
-import 'package:workout_app/screens/BottomTab.dart';
+import 'package:workout_app/screens/login.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -24,13 +21,13 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-          Image.network(
-                  'https://images.unsplash.com/photo-1571388072750-31a921b3d900?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1325',
+                  Image.network(
+                  'https://plus.unsplash.com/premium_photo-1663036240977-871750e69eba?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1458',
                   width: double.infinity,
                   height: 400,
                   fit: BoxFit.cover,
                 ),
-                const SizedBox(height: 20),
+                    const SizedBox(height: 20),
               const Text(
                 'Welcome Back!',
                 style: TextStyle(
@@ -67,15 +64,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                   
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const BottomTabExample(),
+                        builder: (context) => const LoginScreen(),
                       ),
                     );
                   },
-                  child: const Text('Login'),
+                  child: const Text('Sign Up'),
                 ),
               ),
               const SizedBox(height: 30),
@@ -83,27 +79,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                    onPressed: () {
-                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordScreen(),
-                        ),
-                      );
-                    },
+                    onPressed: () {},
                     child: const Text('Forgot Password?'),
                   ),
                   const SizedBox(width: 10),
                   TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignUpScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text('Create New Account'),
+                    onPressed: () {},
+                    child: const Text('Login'),
                   ),
                 ],
               )
@@ -113,4 +95,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-}
+}                                           
