@@ -162,7 +162,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Counter and switch
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text(
+                'Save Changes',
+                style: TextStyle(color: Colors.amberAccent),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+
             const SizedBox(height: 10),
           ],
         ),
