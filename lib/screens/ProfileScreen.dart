@@ -85,7 +85,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final profileImage = ref.watch(profileImageProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(
+        title: const Text('Profile', style: TextStyle(color: Colors.white)),
+        backgroundColor: Color(0xFF141414),
+        elevation: 0,
+        iconTheme: const IconThemeData(
+          color: Colors.white, // Set back button color here
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -173,6 +180,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
             const SizedBox(height: 20),
 
+            TextField(
+              decoration: const InputDecoration(
+                labelText: "Age",
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.person_outline),
+              ),
+              keyboardType: TextInputType.emailAddress,
+              controller: _emailController,
+              onChanged: (value) {
+                ref.read(emailProvider.notifier).state = value;
+              },
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
