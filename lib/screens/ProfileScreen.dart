@@ -1,16 +1,18 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:workout_app/helpers/Validators.dart';
 
-// Providers
 final counterProvider = StateProvider<int>((ref) => 0);
 final switchValue = StateProvider<bool>((ref) => false);
 final profileImageProvider = StateProvider<File?>((ref) => null);
 final nameProvider = StateProvider<String>((ref) => '');
 final emailProvider = StateProvider<String>((ref) => '');
+final phoneProvider = StateProvider<String>((ref) => '');
 
 // Optional greeting provider
 final hello = Provider<String>((ref) => "hello riverpod");
@@ -23,26 +25,32 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
+  late final TextEditingController _phoneController;
+
+  bool _autoValidate = false;
+  bool _isSubmitting = false;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: ref.read(nameProvider));
     _emailController = TextEditingController(text: ref.read(emailProvider));
+    _phoneController = TextEditingController(text: ref.read(phoneProvider));
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
   Future<void> pickImage() async {
-    // Show dialog to choose between camera and gallery
     final ImageSource? source = await showDialog<ImageSource>(
       context: context,
       builder: (BuildContext context) {
@@ -81,6 +89,53 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     }
   }
 
+  Future<void> _saveProfile() async {
+    // Enable validation
+    setState(() => _autoValidate = true);
+
+    // Validate form
+    if (!_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fix the errors before saving'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Show loading
+    setState(() => _isSubmitting = true);
+
+    try {
+      // Simulate API call
+      await Future.delayed(const Duration(seconds: 1));
+
+      // Save form
+      _formKey.currentState!.save();
+
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Profile saved successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSubmitting = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final count = ref.watch(counterProvider);
@@ -92,110 +147,150 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       appBar: AppBar(title: const Text('Profile')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(greeting, style: const TextStyle(fontSize: 20)),
-            const SizedBox(height: 20),
+        child: Form(
+          key: _formKey,
+          autovalidateMode: _autoValidate
+              ? AutovalidateMode.onUserInteraction
+              : AutovalidateMode.disabled,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
 
-            // Circular Profile Image with tap to change
-            GestureDetector(
-              onTap: pickImage,
-              child: Stack(
-                children: [
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundColor: Colors.grey[300],
-                    backgroundImage: profileImage != null
-                        ? FileImage(profileImage)
-                        : null,
-                    child: profileImage == null
-                        ? const Icon(
-                            Icons.person,
-                            size: 60,
-                            color: Colors.white,
-                          )
-                        : null,
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.camera_alt,
-                        size: 20,
-                        color: Colors.white,
+              // Circular Profile Image with tap to change
+              GestureDetector(
+                onTap: pickImage,
+                child: Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.grey[300],
+                      backgroundImage: profileImage != null
+                          ? FileImage(profileImage)
+                          : null,
+                      child: profileImage == null
+                          ? const Icon(
+                              Icons.person,
+                              size: 60,
+                              color: Colors.white,
+                            )
+                          : null,
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.camera_alt,
+                          size: 20,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+
+              // Name field with validation
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: "Name",
+                  hintText: "Enter your full name",
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.person_outline),
+                ),
+                controller: _nameController,
+                validator: Validators.name,
+                textCapitalization: TextCapitalization.words,
+                onChanged: (value) {
+                  ref.read(nameProvider.notifier).state = value;
+                },
+                onSaved: (value) {
+                  ref.read(nameProvider.notifier).state = value ?? '';
+                },
+              ),
+              const SizedBox(height: 20),
+
+              // Email field with validation
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: "Email",
+                  hintText: "your.email@example.com",
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.email_outlined),
+                ),
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                validator: Validators.email,
+                onChanged: (value) {
+                  ref.read(emailProvider.notifier).state = value;
+                },
+                onSaved: (value) {
+                  ref.read(emailProvider.notifier).state = value ?? '';
+                },
+              ),
+              const SizedBox(height: 20),
+
+              // Phone number field with validation
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: "Phone Number",
+                  hintText: "Enter 10-digit mobile number",
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.phone_outlined),
+                  prefixText: "+91 ",
+                ),
+                controller: _phoneController,
+                keyboardType: TextInputType.phone,
+                validator: Validators.phoneNumber,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10),
                 ],
+                onChanged: (value) {
+                  ref.read(phoneProvider.notifier).state = value;
+                },
+                onSaved: (value) {
+                  ref.read(phoneProvider.notifier).state = value ?? '';
+                },
               ),
-            ),
-            const SizedBox(height: 20),
+              const SizedBox(height: 30),
 
-            // Name field
-            TextField(
-              decoration: const InputDecoration(
-                labelText: "Name",
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.person_outline),
+              // Save Button
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton.icon(
+                  onPressed: _isSubmitting ? null : _saveProfile,
+                  icon: _isSubmitting
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                          ),
+                        )
+                      : const Icon(Icons.save),
+                  label: Text(_isSubmitting ? 'Saving...' : 'Save Profile'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
               ),
-              controller: _nameController,
-              onChanged: (value) {
-                ref.read(nameProvider.notifier).state = value;
-              },
-            ),
-            const SizedBox(height: 20),
-
-            // Email field
-            TextField(
-              decoration: const InputDecoration(
-                labelText: "Email",
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.email_outlined),
-              ),
-              keyboardType: TextInputType.emailAddress,
-              controller: _emailController,
-              onChanged: (value) {
-                ref.read(emailProvider.notifier).state = value;
-              },
-            ),
-            const SizedBox(height: 20),
-
-            // Counter and switch
-            Text("Counter: $count", style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Switch(
-                  value: isSwitched,
-                  onChanged: (value) {
-                    ref.read(switchValue.notifier).state = value;
-                  },
-                ),
-                const SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    ref.read(counterProvider.notifier).state++;
-                  },
-                  child: const Text("Increment"),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    ref.read(counterProvider.notifier).state--;
-                  },
-                  child: const Text("Decrement"),
-                ),
-              ],
-            ),
-          ],
+              const SizedBox(height: 30),
+            ],
+          ),
         ),
       ),
     );

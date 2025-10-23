@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workout_app/screens/Home.dart';
 import 'package:workout_app/screens/ProfileScreen.dart';
+import 'package:workout_app/screens/Workout.dart';
 
 class BottomTabExample extends StatefulWidget {
   const BottomTabExample({super.key});
@@ -14,8 +15,8 @@ class _BottomTabExampleState extends State<BottomTabExample> {
 
   final List<Widget> _pages = [
     const HomeScreen(),
+    const WorkoutScreen(),
     const ProfileScreen(),
-    const Center(child: Text('Profile Page')),
   ];
   @override
   Widget build(BuildContext context) {
