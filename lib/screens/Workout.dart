@@ -16,7 +16,6 @@ class Workout {
 class WorkoutScreen extends StatelessWidget {
   const WorkoutScreen({super.key});
 
-  // Step 2: Replace List<String> with List<Workout>
   final List<Workout> workouts = const [
     Workout(
       name: 'Push Day',

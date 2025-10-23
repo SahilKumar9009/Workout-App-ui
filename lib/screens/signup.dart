@@ -21,19 +21,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-                  Image.network(
-                  'https://plus.unsplash.com/premium_photo-1663036240977-871750e69eba?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1458',
-                  width: double.infinity,
-                  height: 400,
-                  fit: BoxFit.cover,
-                ),
-                    const SizedBox(height: 20),
+              Image.network(
+                'https://plus.unsplash.com/premium_photo-1663036240977-871750e69eba?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1458',
+                width: double.infinity,
+                height: 400,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 20),
               const Text(
                 'Welcome Back!',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               TextField(
@@ -83,16 +80,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: const Text('Forgot Password?'),
                   ),
                   const SizedBox(width: 10),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('Login'),
-                  ),
+                  TextButton(onPressed: () {}, child: const Text('Login')),
                 ],
-              )
+              ),
             ],
           ),
         ),
       ),
     );
   }
-}                                           
+}

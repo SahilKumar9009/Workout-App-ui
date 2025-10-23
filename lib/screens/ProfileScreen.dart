@@ -12,9 +12,6 @@ final profileImageProvider = StateProvider<File?>((ref) => null);
 final nameProvider = StateProvider<String>((ref) => '');
 final emailProvider = StateProvider<String>((ref) => '');
 
-// Optional greeting provider
-final hello = Provider<String>((ref) => "hello riverpod");
-
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
@@ -84,7 +81,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final count = ref.watch(counterProvider);
-    final greeting = ref.watch(hello);
     final isSwitched = ref.watch(switchValue);
     final profileImage = ref.watch(profileImageProvider);
 
@@ -95,7 +91,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(greeting, style: const TextStyle(fontSize: 20)),
             const SizedBox(height: 20),
 
             // Circular Profile Image with tap to change
@@ -168,33 +163,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             const SizedBox(height: 20),
 
             // Counter and switch
-            Text("Counter: $count", style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Switch(
-                  value: isSwitched,
-                  onChanged: (value) {
-                    ref.read(switchValue.notifier).state = value;
-                  },
-                ),
-                const SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    ref.read(counterProvider.notifier).state++;
-                  },
-                  child: const Text("Increment"),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    ref.read(counterProvider.notifier).state--;
-                  },
-                  child: const Text("Decrement"),
-                ),
-              ],
-            ),
           ],
         ),
       ),
