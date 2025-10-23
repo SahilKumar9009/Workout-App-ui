@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/legacy.dart';
 
 // Counter provider
 final counterProvider = StateProvider<int>((ref) => 0);
+final switchValue = StateProvider<bool>((ref) => false);
 
 // Optional greeting provider
 final hello = Provider<String>((ref) => "hello riverpod");
@@ -34,6 +35,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Consumer(
+                  builder: (context, ref, child) {
+                    print("Switch rebuilt");
+                    return Switch(
+                      value: ref.watch(switchValue),
+                      onChanged: (value) {
+                        ref.read(switchValue.notifier).state = value;
+                      },
+                    );
+                  },
+                ),
                 ElevatedButton(
                   onPressed: () {
                     ref.read(counterProvider.notifier).state++;
