@@ -108,7 +108,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         ? const Icon(
                             Icons.person,
                             size: 60,
-                            color: Colors.white,
+                            color: Colors.black,
                           )
                         : null,
                   ),
@@ -117,14 +117,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     right: 0,
                     child: Container(
                       padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        shape: BoxShape.circle,
-                      ),
+                      decoration: BoxDecoration(shape: BoxShape.circle),
                       child: const Icon(
                         Icons.camera_alt,
                         size: 20,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -162,17 +159,31 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
             const SizedBox(height: 20),
 
+            TextField(
+              decoration: const InputDecoration(
+                labelText: "Phone number",
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.phone_outlined),
+              ),
+              keyboardType: TextInputType.emailAddress,
+              controller: _emailController,
+              onChanged: (value) {
+                ref.read(emailProvider.notifier).state = value;
+              },
+            ),
+            const SizedBox(height: 20),
+
             ElevatedButton(
               onPressed: () {},
-              child: const Text(
-                'Save Changes',
-                style: TextStyle(color: Colors.amberAccent),
-              ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: Color(0xFF141414),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
+              ),
+              child: const Text(
+                'Save Changes',
+                style: TextStyle(color: Colors.white),
               ),
             ),
 

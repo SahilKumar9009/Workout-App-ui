@@ -19,19 +19,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-                    Image.network(
-                  'https://media.istockphoto.com/id/1188433175/photo/happy-father-looking-at-cheerful-son-and-exercising-with-dumbbells.jpg?s=1024x1024&w=is&k=20&c=W3EL-Mr14gDV6EVjIfwxA_QRGVakyxLtbRpFVV856x8=',
-                  width: double.infinity,
-                  height: 400,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(height: 20),
+              Image.network(
+                'https://media.istockphoto.com/id/1188433175/photo/happy-father-looking-at-cheerful-son-and-exercising-with-dumbbells.jpg?s=1024x1024&w=is&k=20&c=W3EL-Mr14gDV6EVjIfwxA_QRGVakyxLtbRpFVV856x8=',
+                width: double.infinity,
+                height: 400,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 20),
               const Text(
                 'Forgot Password',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               TextField(
@@ -49,24 +46,36 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                  ),
                   onPressed: () {},
-                  child: const Text('Send Email'),
+                  child: const Text(
+                    'Send Email',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
               const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Icon(Icons.arrow_back, color: Colors.black),
                   TextButton(
-                    onPressed: () {},
-                    child: const Text('Back'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Back',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
       ),
     );
   }
-}   
+}

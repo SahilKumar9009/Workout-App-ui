@@ -60,6 +60,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -68,7 +71,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     );
                   },
-                  child: const Text('Sign Up'),
+                  child: const Text(
+                    'Sign Up',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
               const SizedBox(height: 30),
@@ -77,10 +83,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 children: [
                   TextButton(
                     onPressed: () {},
-                    child: const Text('Forgot Password?'),
+                    child: const Text(
+                      'Forgot Password?',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                   const SizedBox(width: 10),
-                  TextButton(onPressed: () {}, child: const Text('Login')),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'Login',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
                 ],
               ),
             ],

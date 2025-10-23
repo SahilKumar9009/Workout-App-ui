@@ -29,13 +29,31 @@ class _BottomTabExampleState extends State<BottomTabExample> {
             _currentIndex = index;
           });
         },
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
+        selectedLabelStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.normal,
+        ),
+        backgroundColor: const Color(0xFF141414),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
+            icon: Icon(Icons.home, color: Colors.white),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.fitness_center, color: Colors.white),
             label: 'Workout',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person, color: Colors.white),
+            label: 'Profile',
+          ),
         ],
       ),
     );

@@ -24,19 +24,16 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-          Image.network(
-                  'https://images.unsplash.com/photo-1571388072750-31a921b3d900?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1325',
-                  width: double.infinity,
-                  height: 400,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(height: 20),
+              Image.network(
+                'https://images.unsplash.com/photo-1571388072750-31a921b3d900?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1325',
+                width: double.infinity,
+                height: 400,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 20),
               const Text(
                 'Welcome Back!',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               TextField(
@@ -66,8 +63,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF141414),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
                   onPressed: () {
-                   
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -75,7 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     );
                   },
-                  child: const Text('Login'),
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
               const SizedBox(height: 30),
@@ -84,14 +89,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   TextButton(
                     onPressed: () {
-                       Navigator.push(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const ForgotPasswordScreen(),
                         ),
                       );
                     },
-                    child: const Text('Forgot Password?'),
+                    child: const Text(
+                      'Forgot Password?',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                   const SizedBox(width: 10),
                   TextButton(
@@ -103,10 +111,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     },
-                    child: const Text('Create New Account'),
+                    child: const Text(
+                      'Create New Account',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
