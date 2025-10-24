@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workout_app/screens/AddTasks.dart';
 import 'package:workout_app/screens/Home.dart';
 import 'package:workout_app/screens/ProfileScreen.dart';
 import 'package:workout_app/screens/Workout.dart';
@@ -16,6 +17,7 @@ class _BottomTabExampleState extends State<BottomTabExample> {
   final List<Widget> _pages = [
     const HomeScreen(),
     const WorkoutScreen(),
+    const AddWorkout(),
     const ProfileScreen(),
   ];
   @override
@@ -30,6 +32,7 @@ class _BottomTabExampleState extends State<BottomTabExample> {
           });
         },
         selectedItemColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.grey,
         selectedLabelStyle: const TextStyle(
           fontSize: 14,
@@ -50,6 +53,10 @@ class _BottomTabExampleState extends State<BottomTabExample> {
             label: 'Workout',
           ),
 
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add, color: Colors.white),
+            label: 'Add workout',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person, color: Colors.white),
             label: 'Profile',

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:workout_app/helpers/Validators.dart';
 
 // Providers
 final counterProvider = StateProvider<int>((ref) => 0);
@@ -11,6 +12,8 @@ final switchValue = StateProvider<bool>((ref) => false);
 final profileImageProvider = StateProvider<File?>((ref) => null);
 final nameProvider = StateProvider<String>((ref) => '');
 final emailProvider = StateProvider<String>((ref) => '');
+final phoneProvider = StateProvider<String>((ref) => '');
+final ageProvider = StateProvider<String>((ref) => '');
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -23,12 +26,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final ImagePicker _picker = ImagePicker();
   late final TextEditingController _nameController;
   late final TextEditingController _emailController;
+  late final TextEditingController _phoneController;
+  late final TextEditingController _ageController;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: ref.read(nameProvider));
     _emailController = TextEditingController(text: ref.read(emailProvider));
+    _phoneController = TextEditingController(text: ref.read(phoneProvider));
+    _ageController = TextEditingController(text: ref.read(ageProvider));
   }
 
   @override
@@ -173,9 +180,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 prefixIcon: Icon(Icons.phone_outlined),
               ),
               keyboardType: TextInputType.emailAddress,
-              controller: _emailController,
+              controller: _phoneController,
               onChanged: (value) {
-                ref.read(emailProvider.notifier).state = value;
+                ref.read(phoneProvider.notifier).state = value;
               },
             ),
             const SizedBox(height: 20),
@@ -187,14 +194,63 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 prefixIcon: Icon(Icons.person_outline),
               ),
               keyboardType: TextInputType.emailAddress,
-              controller: _emailController,
+              controller: _ageController,
               onChanged: (value) {
-                ref.read(emailProvider.notifier).state = value;
+                ref.read(ageProvider.notifier).state = value;
               },
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                if (ref.read(nameProvider.notifier).state.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Name is required',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+                if (ref.read(emailProvider.notifier).state.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Email is required',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+                if (ref.read(phoneProvider.notifier).state.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Phone number is required',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+                if (ref.read(ageProvider.notifier).state.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Age is required',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF141414),
                 shape: RoundedRectangleBorder(
