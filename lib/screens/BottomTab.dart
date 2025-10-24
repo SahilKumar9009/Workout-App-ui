@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workout_app/models/addWorkout.dart';
 import 'package:workout_app/screens/AddTasks.dart';
 import 'package:workout_app/screens/Home.dart';
 import 'package:workout_app/screens/ProfileScreen.dart';
@@ -17,7 +18,7 @@ class _BottomTabExampleState extends State<BottomTabExample> {
   final List<Widget> _pages = [
     const HomeScreen(),
     const WorkoutScreen(),
-    const AddWorkout(),
+    const AddWorkoutScreen(),
     const ProfileScreen(),
   ];
   @override

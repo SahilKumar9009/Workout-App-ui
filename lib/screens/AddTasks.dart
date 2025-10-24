@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:workout_app/Providers/workoutProvider.dart';
+import 'package:workout_app/models/addWorkout.dart';
 
-class AddWorkout extends StatefulWidget {
-  const AddWorkout({super.key});
+class AddWorkoutScreen extends ConsumerStatefulWidget {
+  const AddWorkoutScreen({super.key});
 
   @override
-  State<AddWorkout> createState() => _AddWorkoutState();
+  ConsumerState<AddWorkoutScreen> createState() => _AddWorkoutScreenState();
 }
 
-class _AddWorkoutState extends State<AddWorkout> {
+class _AddWorkoutScreenState extends ConsumerState<AddWorkoutScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _muscleController = TextEditingController();
-
-  List<Map<String, String>> pushDayExercises = [];
 
   @override
   void dispose() {
@@ -26,9 +27,10 @@ class _AddWorkoutState extends State<AddWorkout> {
 
     if (name.isEmpty || muscle.isEmpty) return;
 
-    setState(() {
-      pushDayExercises.add({'name': name, 'muscle': muscle});
-    });
+    // Add to Riverpod state (will automatically save to storage)
+    ref
+        .read(workoutProvider.notifier)
+        .addWorkout(AddWorkout(name: name, muscle: muscle));
 
     _nameController.clear();
     _muscleController.clear();
@@ -37,6 +39,9 @@ class _AddWorkoutState extends State<AddWorkout> {
 
   @override
   Widget build(BuildContext context) {
+    // Watch the workout list from Riverpod
+    final workouts = ref.watch(workoutProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Tasks', style: TextStyle(color: Colors.white)),
@@ -108,16 +113,26 @@ class _AddWorkoutState extends State<AddWorkout> {
           ),
           const SizedBox(height: 20),
           Expanded(
-            child: ListView.builder(
-              itemCount: pushDayExercises.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: const Icon(Icons.fitness_center),
-                  title: Text(pushDayExercises[index]['name']!),
-                  subtitle: Text(pushDayExercises[index]['muscle']!),
-                );
-              },
-            ),
+            child: workouts.isEmpty
+                ? const Center(child: Text('No workouts added yet'))
+                : ListView.builder(
+                    itemCount: workouts.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: const Icon(Icons.fitness_center),
+                        title: Text(workouts[index].name),
+                        subtitle: Text(workouts[index].muscle),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
+                            ref
+                                .read(workoutProvider.notifier)
+                                .removeWorkout(index);
+                          },
+                        ),
+                      );
+                    },
+                  ),
           ),
         ],
       ),
